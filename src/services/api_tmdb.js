@@ -2,13 +2,20 @@ import axios from "axios";
 
 const mainUrl = "https://api.themoviedb.org/3/";
 
-const apiAccesToken =
-  "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjZDAxNWE3NzFkMDYxZGExYTg0NjFhZTYwOGZkZTUxZiIsIm5iZiI6MTc0NTA2OTI1MC4zNTY5OTk5LCJzdWIiOiI2ODAzYTRjMmUzZmFjMmY5MDI4OTk5ZDgiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.DJiqxgHxb5oXzPhRrDk-z2dqrNl3SEgEmlVHKAs8SFo";
-
-const options = {
-  headers: {
-    Authorization: `Bearer ${apiAccesToken}`,
-  },
+const apiGet = async (endpoint) => {
+  const targetUrl = mainUrl + endpoint;
+  try {
+    // Ми передаємо повний URL до TMDB як query параметр "url"
+    const res = await fetch(`/api/proxy?url=${encodeURIComponent(targetUrl)}`);
+    if (!res.ok) {
+      throw new Error(`Помилка запиту: ${res.status}`);
+    }
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error("apiGet error:", err);
+    throw err;
+  }
 };
 
 export const getConfig = () => {
@@ -47,14 +54,4 @@ export const searchMovies = (query, page) => {
     page: page,
   });
   return apiGet(`search/movie?${params.toString()}`);
-};
-
-const apiGet = async (url) => {
-  try {
-    const response = await axios.get(mainUrl + url, options);
-    return response.data;
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
 };
