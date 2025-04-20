@@ -1,14 +1,13 @@
 const mainUrl = "https://api.themoviedb.org/3/";
+const axios = require("axios");
 
 const apiGet = async (endpoint) => {
   const targetUrl = mainUrl + endpoint;
   try {
-    const res = await fetch(`/api/proxy?url=${encodeURIComponent(targetUrl)}`);
-    if (!res.ok) {
-      throw new Error(`Помилка запиту: ${res.status}`);
-    }
-    const data = await res.json();
-    return data;
+    const response = await axios.get(`/api/proxy`, {
+      params: { url: targetUrl },
+    });
+    return response.data;
   } catch (err) {
     console.error("apiGet error:", err);
     throw err;
