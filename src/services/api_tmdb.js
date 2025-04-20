@@ -1,11 +1,8 @@
-import axios from "axios";
-
 const mainUrl = "https://api.themoviedb.org/3/";
 
 const apiGet = async (endpoint) => {
   const targetUrl = mainUrl + endpoint;
   try {
-    // Ми передаємо повний URL до TMDB як query параметр "url"
     const res = await fetch(`/api/proxy?url=${encodeURIComponent(targetUrl)}`);
     if (!res.ok) {
       throw new Error(`Помилка запиту: ${res.status}`);

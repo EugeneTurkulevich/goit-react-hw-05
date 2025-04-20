@@ -1,23 +1,21 @@
+import axios from "axios";
+
 export default async function handler(req, res) {
-  // Отримання URL запиту від клієнта
   const { url } = req.query;
   if (!url) {
-    return res.status(400).json({ error: "Не вказано URL" });
+    return res.status(400).json({ error: "URL not set" });
   }
-  const apiKey = process.env.API_KEY; // або використовували JWT token, як вам потрібно
+  const apiKey = process.env.API_KEY;
 
   try {
-    // Ви можете використовувати fetch або бібліотеку axios на сервері
-    const response = await fetch(url, {
+    const response = await axios.get(url, {
       headers: {
-        // приклад використання токена; тут можливо потрібно змінити заголовки залежно від API
         Authorization: `Bearer ${apiKey}`,
       },
     });
-    const data = await response.json();
-    res.status(200).json(data);
+    res.status(200).json(response.data);
   } catch (error) {
     console.error("Proxy error:", error);
-    res.status(500).json({ error: "Внутрішня помилка сервера" });
+    res.status(500).json({ error: "internal server error" });
   }
 }
