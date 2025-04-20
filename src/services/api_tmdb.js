@@ -1,5 +1,5 @@
+import axios from "axios";
 const mainUrl = "https://api.themoviedb.org/3/";
-const axios = require("axios");
 
 const apiGet = async (endpoint) => {
   const targetUrl = mainUrl + endpoint;
